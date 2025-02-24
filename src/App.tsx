@@ -24,9 +24,13 @@ export function App() {
     transactionsByEmployeeUtils.invalidateData()
 
     await employeeUtils.fetchAll()
+
+    // moved "setIsLoading" before transactions are loaded, as employees are already loaded
+    setIsLoading(false)
+
     await paginatedTransactionsUtils.fetchAll()
 
-    setIsLoading(false)
+    // setIsLoading(false)
   }, [employeeUtils, paginatedTransactionsUtils, transactionsByEmployeeUtils])
 
   const loadTransactionsByEmployee = useCallback(
@@ -65,7 +69,12 @@ export function App() {
               return
             }
 
-            await loadTransactionsByEmployee(newValue.id)
+            // just call loadAllTransactions since "All Employees" does not have a value
+            else if (newValue.id === "") {
+              await loadAllTransactions()
+            } else {
+              await loadTransactionsByEmployee(newValue.id)
+            }
           }}
         />
 
@@ -77,7 +86,13 @@ export function App() {
           {transactions !== null && (
             <button
               className="RampButton"
-              disabled={paginatedTransactionsUtils.loading}
+              disabled={
+                paginatedTransactionsUtils.loading ||
+                // when viewing an employee, the array will have a length > 0, making this condition false
+                transactionsByEmployee?.length === 0 ||
+                // if transactions is null, there are no more transactions to load
+                paginatedTransactions?.nextPage == null
+              }
               onClick={async () => {
                 await loadAllTransactions()
               }}

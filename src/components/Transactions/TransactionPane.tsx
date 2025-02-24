@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { InputCheckbox } from "../InputCheckbox"
 import { TransactionPaneComponent } from "./types"
+import { useCustomFetch } from "src/hooks/useCustomFetch"
 
 export const TransactionPane: TransactionPaneComponent = ({
   transaction,
@@ -8,6 +9,7 @@ export const TransactionPane: TransactionPaneComponent = ({
   setTransactionApproval: consumerSetTransactionApproval,
 }) => {
   const [approved, setApproved] = useState(transaction.approved)
+  const { clearCache } = useCustomFetch()
 
   return (
     <div className="RampPane">
@@ -27,6 +29,9 @@ export const TransactionPane: TransactionPaneComponent = ({
             transactionId: transaction.id,
             newValue,
           })
+
+          // forcing to clear cache, once data is refetched app will get the new fresh data
+          await clearCache()
 
           setApproved(newValue)
         }}
