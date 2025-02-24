@@ -10,7 +10,8 @@ export const InputCheckbox: InputCheckboxComponent = ({ id, checked = false, dis
       <label
         className={classNames("RampInputCheckbox--label", {
           "RampInputCheckbox--label-checked": checked,
-          "RampInputCheckbox--label-disabled": disabled,
+          // replaced "disabled" with "!unchecked", new class of "unchecked added"
+          "RampInputCheckbox--label-unchecked": !checked,
         })}
       />
       <input

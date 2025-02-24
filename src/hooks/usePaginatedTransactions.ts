@@ -22,7 +22,8 @@ export function usePaginatedTransactions(): PaginatedTransactionsResult {
         return response
       }
 
-      return { data: response.data, nextPage: response.nextPage }
+      // spreads the existing transactions into the new array, then adds the newly fetched transactions to the end of the array
+      return { data: [...previousResponse.data, ...response.data], nextPage: response.nextPage }
     })
   }, [fetchWithCache, paginatedTransactions])
 

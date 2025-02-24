@@ -92,7 +92,8 @@ hr.RampBreak--l {
 
 .RampInputSelect--dropdown-container {
   display: none;
-  position: fixed;
+  /* changed from position:fixed to position:absolute to fix bug 1 */
+  position: absolute;
   width: 100%;
   max-width: 700px;
   border: 1px solid var(--color-darker-shade);
@@ -122,7 +123,9 @@ hr.RampBreak--l {
 }
 
 .RampInputCheckbox--container {
+  /* added align-items for the input and label to be aligned */
   display: flex;
+  align-items: center;
 }
 
 .RampInputCheckbox--label {
@@ -149,8 +152,22 @@ hr.RampBreak--l {
   background-color: var(--color-constructive);
 }
 
+/* added a new Unchecked property */
+.RampInputCheckbox--label-unchecked:before {
+  content: " ";
+  width: 100%;
+  height: 100%;
+}
+
 .RampInputCheckbox--input {
-  display: none;
+  /* hiding the checkbox input and overlaying with label */
+  transform: translate(-19.5px);
+  opacity: 0;
+
+  /* more styling to assure input can be clicked for better UX */
+  margin-top: 0.5px;
+  width: 19.5px;
+  height: 19.5px;
 }
 
 .RampButton {
